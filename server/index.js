@@ -2,13 +2,18 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const UserModel = require("./models/Users");
+const cors = require("cors");
 
-mongoose.connect();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors());
 
-app.post("/", async (req, res) => {
+
+mongoose.connect();
+
+
+app.post("/createUser", async (req, res) => {
   const newUser = new UserModel({
     name: req.body.name,
     age: req.body.age,
@@ -25,8 +30,8 @@ app.post("/", async (req, res) => {
 });
 
 app.get("/getUsers", async (req, res) => {
-  const data = await UserModel.find();
-  res.json(data);
+  const result = await UserModel.find();
+  res.json(result);
 });
 
 app.listen(3001, () => {
